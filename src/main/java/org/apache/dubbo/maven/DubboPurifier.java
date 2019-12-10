@@ -265,12 +265,16 @@ final class DubboPurifier {
             Field enumField = enumFields.get(i);
             enumField.setAccessible(true);
             Object value = enumField.get(enumItem);
-            if (value instanceof CharSequence) {
+            if (value == null) {
+                writer.append("null");
+            } else if (value instanceof CharSequence) {
                 writer.append("\"").append(value.toString()).append("\"");
+            } else if (value instanceof Character) {
+                writer.append("'").append(value.toString()).append("'");
             } else if (value instanceof Long) {
                 writer.append(value.toString()).append("L");
-            } else if (value instanceof Short) {
-                writer.append("(short)").append(value.toString());
+            } else if (value instanceof Float) {
+                writer.append(value.toString()).append("f");
             } else { //TODO
                 writer.append(value.toString());
             }
